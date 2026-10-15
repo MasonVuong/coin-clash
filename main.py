@@ -1,7 +1,8 @@
 import pygame as pg; pg.init()
 import sys
 
-from quarter import Quarter
+from player import Player
+from dollar_bill import DollarBill
 
 VIRTUAL_WIDTH = 320
 VIRTUAL_HEIGHT = 180
@@ -21,7 +22,8 @@ window = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT), pg.RESIZABLE)
 canvas = pg.Surface((VIRTUAL_WIDTH, VIRTUAL_HEIGHT))
 clock = pg.time.Clock()
 
-player = Quarter()
+player = Player()
+bill = DollarBill(player)
 
 run = True
 while run:
@@ -29,16 +31,19 @@ while run:
         if e.type == pg.QUIT:
             run = False
 
-    player.update()
+    seconds = clock.tick(60) / 1000.0
+
+    player.update(seconds)
+    bill.update(seconds)
     
     canvas.fill((255, 255, 255))
+    bill.draw(canvas)
     player.draw(canvas)
+    
 
     scaled_canvas = pg.transform.scale(canvas, (SCALE_WIDTH, SCALE_HEIGHT))
     window.blit(scaled_canvas, (DESTINATION_X, DESTINATION_Y))
     pg.display.flip()
-
-    clock.tick(60)
 
 pg.quit()
 sys.exit()
