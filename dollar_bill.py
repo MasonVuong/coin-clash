@@ -18,6 +18,6 @@ class DollarBill(pg.sprite.Sprite):
     def update(self, seconds):
         self.state.update(seconds)
     def attack(self):
-        self.state = DollarBillDash(self, self.player.rect.x + self.player.rect.width / 2, self.player.rect.y + self.player.rect.width / 2)
+        self.state = DollarBillDash(self, self.player.rect.x + self.player.rect.width / 2, self.player.rect.y + self.player.rect.height / 2)
 
     
