@@ -1,5 +1,5 @@
 import pygame as pg; pg.init()
-import math
+import math, random
 from coin import Coin
 
 class Player(pg.sprite.Sprite):
@@ -18,7 +18,7 @@ class Player(pg.sprite.Sprite):
 
     def draw(self, window):
         for coin in self.coins:
-                    coin.draw(window)
+            coin.draw(window)
         window.blit(self.surface, self.rect)
 
     def update(self, seconds):
@@ -42,17 +42,23 @@ class Player(pg.sprite.Sprite):
         center_x = self.rect.x + self.rect.width / 2
         center_y = self.rect.y + self.rect.height / 2
         if self.shoot_timer >= self.shoot_cooldown:
-            self.shoot_timer = 0
+            direct_x = 0
+            direct_y = 0
             if keys[pg.K_i]:
-                self.coins.append(Coin(1, center_x, center_y, center_x, center_y - self.range))
-            elif keys[pg.K_j]:
-                self.coins.append(Coin(1, center_x, center_y, center_x - self.range, center_y))
-            elif keys[pg.K_k]:
-                self.coins.append(Coin(1, center_x, center_y, center_x, center_y + self.range))
-            elif keys[pg.K_l]:
-                self.coins.append(Coin(1, center_x, center_y, center_x + self.range, center_y))
-            else:
-                self.shoot_timer = self.shoot_cooldown
+                direct_y -= 1
+            if keys[pg.K_j]:
+                direct_x -= 1
+            if keys[pg.K_k]:
+                direct_y += 1
+            if keys[pg.K_l]:
+                direct_x += 1
+            if (direct_x != 0 or direct_y != 0):
+                self.shoot_timer = 0
+                if (direct_x != 0 and direct_y != 0):
+                    diagonal = 2 ** .5
+                else:
+                    diagonal = 1
+                self.coins.append(Coin(random.choice([1, 5, 10, 25, 100]), self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2, self.rect.x + self.rect.width / 2 + self.range * direct_x * diagonal, self.rect.y + self.rect.height / 2 + self.range * direct_y * diagonal))
             
 
         to_remove = []

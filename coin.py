@@ -2,11 +2,26 @@ import pygame as pg; pg.init()
 from dollar_bill import DollarBill
 
 class Coin(pg.sprite.Sprite):
-    speed = 5
+    speed = 3
     def __init__(self, value, x, y, target_x, target_y):
         super().__init__()
-        self.x = x
-        self.y = y
+
+        path = ""
+        if value == 1:
+            path = "assets/penny.png"
+        elif value == 5:
+            path = "assets/nickel.png"
+        elif value == 10:
+            path = "assets/dime.png"
+        elif value == 25:
+            path = "assets/quarter.png"
+        elif value == 100:
+            path = "assets/silver_dollar.png"
+        self.surface = pg.image.load(path).convert_alpha()
+        self.rect = self.surface.get_rect()
+
+        self.rect.centerx = x
+        self.rect.centery = y
         self.target_x = target_x
         self.target_y = target_y
         diff_x = target_x - x
@@ -16,13 +31,13 @@ class Coin(pg.sprite.Sprite):
         self.speed_y = diff_y * Coin.speed / distance
 
     def draw(self, screen):
-        pg.draw.circle(screen, (0, 0, 0), (self.x, self.y), 10)
+        screen.blit(self.surface, self.rect)
 
     def update(self):
-        self.x += self.speed_x
-        self.y += self.speed_y
-        diff_x = self.target_x - self.x
-        diff_y = self.target_y - self.y
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+        diff_x = self.target_x - self.rect.centerx
+        diff_y = self.target_y - self.rect.centery
         distance = (diff_x ** 2 + diff_y ** 2) ** .5
         if distance <= Coin.speed:
             return True
