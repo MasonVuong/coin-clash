@@ -1,5 +1,5 @@
 import pygame as pg; pg.init()
-import sys
+import sys, os
 
 from player import Player
 from dollar_bill import DollarBill

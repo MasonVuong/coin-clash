@@ -3,6 +3,7 @@ from dollar_bill_state.dollar_bill_idle import DollarBillIdle
 from dollar_bill_state.dollar_bill_dash import DollarBillDash
 from coin import Coin
 import random
+from helper import Helper
 
 class DollarBill(pg.sprite.Sprite):
     def __init__(self, player):
@@ -12,7 +13,7 @@ class DollarBill(pg.sprite.Sprite):
         self.player = player
         self.float_x = 10
         self.float_y = 20
-        self.surface = pg.image.load("assets/bill.png").convert_alpha()
+        self.surface = pg.image.load(Helper.resource_path("assets/bill.png")).convert_alpha()
         self.rect = self.surface.get_rect()
         self.rect.topleft = (self.float_x, self.float_y)
         self.health = 250

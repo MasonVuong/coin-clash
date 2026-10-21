@@ -1,6 +1,7 @@
 import pygame as pg; pg.init()
 import math, random
 from coin import Coin
+from helper import Helper
 
 class Player(pg.sprite.Sprite):
     def __init__(self):
@@ -8,10 +9,10 @@ class Player(pg.sprite.Sprite):
         self.speed = 3
         self.float_x = 150
         self.float_y = 50
-        self.surface = pg.image.load("assets/pig.png").convert_alpha()
+        self.surface = pg.image.load(Helper.resource_path("assets/pig.png")).convert_alpha()
         self.rect = self.surface.get_rect()
         self.rect.topleft = (self.float_x, self.float_y)
-        self.heart = pg.image.load("assets/heart.png").convert_alpha()
+        self.heart = pg.image.load(Helper.resource_path("assets/heart.png")).convert_alpha()
         self.coins = []
         self.shoot_cooldown = .25
         self.shoot_timer = 1

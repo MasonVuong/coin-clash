@@ -1,5 +1,6 @@
 import pygame as pg; pg.init()
 import random
+from helper import Helper
 
 class Coin(pg.sprite.Sprite):
     speed = 4
@@ -8,15 +9,15 @@ class Coin(pg.sprite.Sprite):
 
         path = ""
         if value == 1:
-            path = "assets/penny.png"
+            path = Helper.resource_path("assets/penny.png")
         elif value == 5:
-            path = "assets/nickel.png"
+            path = Helper.resource_path("assets/nickel.png")
         elif value == 10:
-            path = "assets/dime.png"
+            path = Helper.resource_path("assets/dime.png")
         elif value == 25:
-            path = "assets/quarter.png"
+            path = Helper.resource_path("assets/quarter.png")
         elif value == 100:
-            path = "assets/silver_dollar.png"
+            path = Helper.resource_path("assets/silver_dollar.png")
         self.surface = pg.image.load(path).convert_alpha()
         self.rect = self.surface.get_rect()
 
