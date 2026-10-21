@@ -23,7 +23,9 @@ canvas = pg.Surface((VIRTUAL_WIDTH, VIRTUAL_HEIGHT))
 clock = pg.time.Clock()
 
 player = Player()
-bill = DollarBill(player)
+boss = DollarBill(player)
+player.set_boss(boss)
+floor_coins = []
 
 run = True
 while run:
@@ -33,13 +35,27 @@ while run:
 
     seconds = clock.tick(60) / 1000.0
 
-    player.update(seconds)
-    bill.update(seconds)
+    rewards = player.update(seconds)
+    if rewards == "died":
+        sys.exit()
+    if rewards != None:
+        for coin in rewards:
+            floor_coins.append(coin)
+        
+    boss.update(seconds)
     
     canvas.fill((255, 255, 255))
-    bill.draw(canvas)
+    boss.draw(canvas)
     player.draw(canvas)
-    
+    to_remove = []
+    for coin in floor_coins:
+        coin.draw(canvas) 
+        if coin.check_collision(player.rect):
+            player.pickup(coin)
+            to_remove.append(coin)
+    for coin in to_remove:
+        floor_coins.remove(coin)
+
 
     scaled_canvas = pg.transform.scale(canvas, (SCALE_WIDTH, SCALE_HEIGHT))
     window.blit(scaled_canvas, (DESTINATION_X, DESTINATION_Y))
