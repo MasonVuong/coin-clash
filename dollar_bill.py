@@ -1,18 +1,19 @@
 import pygame as pg; pg.init()  
 from dollar_bill_state.dollar_bill_idle import DollarBillIdle
 from dollar_bill_state.dollar_bill_dash import DollarBillDash
+from dollar_bill_state.dollar_bill_shoot import DollarBillShoot
 from coin import Coin
 import random
 from helper import Helper
 
 class DollarBill(pg.sprite.Sprite):
-    def __init__(self, player):
+    def __init__(self, player, x, y):
         super().__init__()
         self.speed = 5
         self.state = DollarBillIdle(self)
         self.player = player
-        self.float_x = 10
-        self.float_y = 20
+        self.float_x = x
+        self.float_y = y
         self.surface = pg.image.load(Helper.resource_path("assets/bill.png")).convert_alpha()
         self.rect = self.surface.get_rect()
         self.rect.topleft = (self.float_x, self.float_y)
@@ -24,13 +25,17 @@ class DollarBill(pg.sprite.Sprite):
     def draw(self, window):
         if self.health > 0:
             window.blit(self.surface, self.rect)
+        self.state.draw(window)
     def update(self, seconds):
         if self.health > 0:
             self.state.update(seconds)
             self.time_alive += seconds
     def attack(self):
+        """
         if self.health > 0:
             self.state = DollarBillDash(self, self.player.rect.x + self.player.rect.width / 2, self.player.rect.y + self.player.rect.height / 2)
+        """
+        self.state = DollarBillShoot(self)
     def damage(self, coin):
         if self.health > 0:
             self.health -= coin.damage

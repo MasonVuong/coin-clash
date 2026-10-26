@@ -12,3 +12,5 @@ class DollarBillIdle(pg.sprite.Sprite):
         if self.attack_timer >= self.attack_cooldown:
             self.attack_timer = 0
             self.boss.attack()
+    def draw(self, window):
+        pass

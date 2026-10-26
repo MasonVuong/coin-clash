@@ -22,8 +22,8 @@ window = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT), pg.RESIZABLE)
 canvas = pg.Surface((VIRTUAL_WIDTH, VIRTUAL_HEIGHT))
 clock = pg.time.Clock()
 
-player = Player()
-boss = DollarBill(player)
+player = Player(150, 50)
+boss = DollarBill(player, 50, 50)
 player.set_boss(boss)
 floor_coins = []
 

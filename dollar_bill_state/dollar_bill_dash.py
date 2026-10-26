@@ -58,4 +58,7 @@ class DollarBillDash(pg.sprite.Sprite):
             self.boss.state = DollarBillIdle(self.boss)
         elif border:
             self.wind_up_timer = self.wind_up_length
+
+    def draw(self, window):
+        pass
     

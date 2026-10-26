@@ -4,11 +4,11 @@ from coin import Coin
 from helper import Helper
 
 class Player(pg.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, x, y):
         super().__init__()
         self.speed = 3
-        self.float_x = 150
-        self.float_y = 50
+        self.float_x = x
+        self.float_y = y
         self.surface = pg.image.load(Helper.resource_path("assets/pig.png")).convert_alpha()
         self.rect = self.surface.get_rect()
         self.rect.topleft = (self.float_x, self.float_y)
@@ -122,11 +122,11 @@ class Player(pg.sprite.Sprite):
     def draw_ui(self, window):
         if int(self.invincible * 5) % 2 == 0:
             for i in range(self.health):
-                window.blit(self.heart, pg.Rect(10 + i * 22, 10, 18, 18))
+                window.blit(self.heart, pg.Rect(2 + i * 22, 2, 18, 18))
         text = "$" + str(self.money / 100)
         if self.money % 10 == 0:
             text += "0"
         text_surface = self.font.render(text, False, (0, 0, 0))
-        window.blit(text_surface, (10, 28))
+        window.blit(text_surface, (2, 20))
 
         
