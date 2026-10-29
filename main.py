@@ -3,6 +3,7 @@ import sys, os
 
 from player import Player
 from dollar_bill import DollarBill
+from helper import Helper
 
 VIRTUAL_WIDTH = 320
 VIRTUAL_HEIGHT = 180
@@ -27,6 +28,9 @@ boss = DollarBill(player, 50, 50)
 player.set_boss(boss)
 floor_coins = []
 
+background_surface = pg.image.load(Helper.resource_path("assets/boxing_ring.png")).convert_alpha()
+background_rect = background_surface.get_rect()
+
 run = True
 while run:
     for e in pg.event.get():
@@ -44,7 +48,7 @@ while run:
         
     boss.update(seconds)
     
-    canvas.fill((255, 255, 255))
+    canvas.blit(background_surface, background_rect)
     boss.draw(canvas)
     player.draw(canvas)
     to_remove = []

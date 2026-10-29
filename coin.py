@@ -55,7 +55,7 @@ class Coin(pg.sprite.Sprite):
         return False
 
     @staticmethod
-    def random_coin_value(nickel, dime, quarter, silver):
+    def random_coin_value(nickel=20, dime=10, quarter=5, silver=1):
         coin_roll = random.randint(0, 99)
         coin_type = 1
         if coin_roll in range(0, nickel):

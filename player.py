@@ -12,7 +12,7 @@ class Player(pg.sprite.Sprite):
         self.surface = pg.image.load(Helper.resource_path("assets/pig.png")).convert_alpha()
         self.rect = self.surface.get_rect()
         self.rect.topleft = (self.float_x, self.float_y)
-        self.heart = pg.image.load(Helper.resource_path("assets/heart.png")).convert_alpha()
+        self.heart = pg.image.load(Helper.resource_path("assets/heart_5.png")).convert_alpha()
         self.coins = []
         self.shoot_cooldown = .25
         self.shoot_timer = 1
@@ -40,12 +40,6 @@ class Player(pg.sprite.Sprite):
         self.invincible -= seconds
         if self.invincible < 0:
             self.invincible = 0
-        if self.check_collision(self.boss) and self.invincible == 0:
-            self.health -= 1
-            self.boss.damage_done += 1
-            self.invincible = self.damage_buffer_time
-        if self.health <= 0:
-            return "died"
         keys = pg.key.get_pressed()
 
         diagonal = 1
@@ -70,9 +64,6 @@ class Player(pg.sprite.Sprite):
         self.rect.topleft = (self.float_x, self.float_y)
 
         self.shoot_timer += seconds
-
-        center_x = self.rect.x + self.rect.width / 2
-        center_y = self.rect.y + self.rect.height / 2
         if self.shoot_timer >= self.shoot_cooldown:
             direct_x = 0
             direct_y = 0
@@ -91,9 +82,8 @@ class Player(pg.sprite.Sprite):
                 else:
                     diagonal = 1
                 coin_type = Coin.random_coin_value(self.nickel_chance, self.dime_chance, self.quarter_chance, self.silver_dollar_chance)
-                self.coins.append(Coin(coin_type, self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2, self.rect.x + self.rect.width / 2 + self.range * direct_x * diagonal, self.rect.y + self.rect.height / 2 + self.range * direct_y * diagonal))
+                self.coins.append(Coin(coin_type, self.rect.centerx, self.rect.centery, self.rect.centerx + self.range * direct_x * diagonal, self.rect.centery + self.range * direct_y * diagonal))
             
-
         to_remove = []
         for coin in self.coins:
             if coin.update():
@@ -117,12 +107,18 @@ class Player(pg.sprite.Sprite):
         if self.rect.colliderect(rect):
             return True
         return False
+    def damage(self, amount):
+        if self.invincible == 0:
+            self.health -= amount
+            self.invincible = self.damage_buffer_time
+            return True
+        return False
     def set_boss(self, boss):
         self.boss = boss
     def draw_ui(self, window):
         if int(self.invincible * 5) % 2 == 0:
             for i in range(self.health):
-                window.blit(self.heart, pg.Rect(2 + i * 22, 2, 18, 18))
+                window.blit(self.heart, pg.Rect(1 + i * 15, 1, 13, 13))
         text = "$" + str(self.money / 100)
         if self.money % 10 == 0:
             text += "0"

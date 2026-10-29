@@ -22,20 +22,40 @@ class DollarBill(pg.sprite.Sprite):
         self.coin_drop = 4
         self.time_alive = 0
         self.time_goal = 15
+        self.coins = []
     def draw(self, window):
         if self.health > 0:
             window.blit(self.surface, self.rect)
-        self.state.draw(window)
+            self.state.draw(window)
+            for coin in self.coins:
+                coin.draw(window)
     def update(self, seconds):
         if self.health > 0:
-            self.state.update(seconds)
+            if self.rect.colliderect(self.player.rect):
+                if self.player.damage(1):
+                    self.damage_done += 1
+            coins = self.state.update(seconds)
+            if coins != None:
+                for coin in coins:
+                    self.coins.append(coin)
+            to_remove = []
+            for coin in self.coins:
+                if coin.update():
+                    to_remove.append(coin)
+                if coin.check_collision(self.player.rect):
+                    if self.player.damage(1):
+                        self.damage_done += 1
+                    to_remove.append(coin)
+            for coin in to_remove:
+                self.coins.remove(coin)  
             self.time_alive += seconds
     def attack(self):
-        """
         if self.health > 0:
-            self.state = DollarBillDash(self, self.player.rect.x + self.player.rect.width / 2, self.player.rect.y + self.player.rect.height / 2)
-        """
-        self.state = DollarBillShoot(self)
+            random_attack = random.randint(0, 1)
+            if random_attack == 0:
+                self.state = DollarBillDash(self, self.player.rect.x + self.player.rect.width / 2, self.player.rect.y + self.player.rect.height / 2)
+            if random_attack == 1:
+                self.state = DollarBillShoot(self)
     def damage(self, coin):
         if self.health > 0:
             self.health -= coin.damage
