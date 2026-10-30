@@ -97,8 +97,10 @@ while run:
                     state = "fight"
             if state == "shop":
                 if e.key == pg.K_j and player.money >= 10:
+                    player.damage_multiplier += 0.1
                     player.money -= 10
                 if e.key == pg.K_k and player.money >= 10:
+                    player.upgrade_coin_luck()
                     player.money -= 10
                 if e.key == pg.K_l and player.money >= 10:
                     player.health += 1

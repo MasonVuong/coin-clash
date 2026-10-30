@@ -4,7 +4,7 @@ from helper import Helper
 
 class Coin(pg.sprite.Sprite):
     speed = 4
-    def __init__(self, value, x, y, target_x=-1, target_y=-1, pick_up=False):
+    def __init__(self, value, x, y, target_x=-1, target_y=-1, pick_up=False, multiplier=1):
         super().__init__()
 
         path = ""
@@ -33,7 +33,7 @@ class Coin(pg.sprite.Sprite):
             distance = (diff_x ** 2 + diff_y ** 2) ** .5
             self.speed_x = diff_x * Coin.speed / distance
             self.speed_y = diff_y * Coin.speed / distance
-            self.damage = value
+            self.damage = value * multiplier
 
         self.float_x = x
         self.float_y = y

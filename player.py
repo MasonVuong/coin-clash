@@ -32,6 +32,9 @@ class Player(pg.sprite.Sprite):
 
         self.rest = False
 
+        self.coin_luck_upgrade_level = 0
+        self.damage_multiplier = 1
+
     def draw(self, window):
         if self.health > 0:
             self.draw_ui(window)
@@ -90,7 +93,7 @@ class Player(pg.sprite.Sprite):
                 else:
                     diagonal = 1
                 coin_type = Coin.random_coin_value(self.nickel_chance, self.dime_chance, self.quarter_chance, self.silver_dollar_chance)
-                self.coins.append(Coin(coin_type, self.rect.centerx, self.rect.centery, self.rect.centerx + self.range * direct_x * diagonal, self.rect.centery + self.range * direct_y * diagonal))
+                self.coins.append(Coin(coin_type, self.rect.centerx, self.rect.centery, self.rect.centerx + self.range * direct_x * diagonal, self.rect.centery + self.range * direct_y * diagonal, multiplier=self.damage_multiplier))
             
         to_remove = []
         for coin in self.coins:
@@ -137,6 +140,30 @@ class Player(pg.sprite.Sprite):
         self.float_y = y
         self.rect.x = self.float_x
         self.rect.y = self.float_y
+
+    def upgrade_coin_luck(self):
+        self.upgrade_coin_luck += 1
+        if self.upgrade_level % 4 == 1:
+            if self.upgrade_level == 1:
+                self.dime_chance = 10
+            else:
+                self.dime_chance += 2
+        elif self.upgrade_level % 4 == 2:
+            if self.upgrade_level == 2:
+                self.nickel_chance = 20
+            else:
+                self.nickel_chance += 2
+        elif self.upgrade_level == 3:
+            if self.upgrade_level == 3:
+                self.quarter_chance = 5
+            else:
+                self.quarter_chance += 2
+        elif self.upgrade_level == 4:
+            if self.upgrade_level == 4:
+                self.silver_dollar_chance = 1
+            else:
+                self.silver_dollar_chance += 2
+        
         
 
         
