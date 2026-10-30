@@ -30,6 +30,8 @@ boss_start_y = 25
 
 player = Player(player_start_x, player_start_y)
 boss = DollarBill(player, boss_start_x, boss_start_y)
+player.rest = True
+boss.rest = True
 player.set_boss(boss)
 floor_coins = []
 
@@ -52,7 +54,7 @@ health_rect.centerx = 240
 health_rect.centery = 90
 
 run = True
-debug = True
+debug = False
 player_points = 0
 boss_points = 0
 last_winner = None
@@ -61,7 +63,7 @@ blue = (6, 90, 181)
 red = (255, 0, 7)
 big_font = pg.font.Font(None, 35)
 small_font = pg.font.Font(None, 20)
-state = "fight"
+state = "title"
 
 while run:
     for e in pg.event.get():
@@ -69,14 +71,26 @@ while run:
             run = False
         if e.type == pg.KEYDOWN:
             if e.key == pg.K_SPACE:
-                if state == "fight" and debug:
-                    boss.damage(damage=boss.max_health)
-                if state == "message":
+                if state == "title":
+                    boss.rest = False
+                    player.rest = False
+                    state = "fight"
+
+                elif state == "message":
                     if player.health > 0:
                         message_timer = 0
                         state = "shop"
                     else:
-                        state = "home"
+                        state = "title"
+                        player = Player(player_start_x, player_start_y)
+                        boss = DollarBill(player, boss_start_x, boss_start_y)
+                        player.rest = True
+                        boss.rest = True
+                        player.set_boss(boss)
+                        floor_coins = []
+                        player_points = 0
+                        boss_points = 0
+                        last_winner = None
                 elif state == "shop":
                     player.reset(player_start_x, player_start_y)
                     boss.reset(boss_start_x, boss_start_y)
@@ -107,7 +121,7 @@ while run:
     if boss.update(seconds) == "died":
         player_points += 1
         last_winner = "player"
-        player.rest = True
+        #player.rest = True
         boss.rest = True
         state = "message"
 
@@ -147,7 +161,18 @@ while run:
         text = "L: 10¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (240 - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
+        text = "Space to Continue"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 50))
 
+    elif state == "title":
+        text = "Coin Clash"
+        text_surface = big_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 ))
+        text = "Space to Continue"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 50))
+    
     scaled_canvas = pg.transform.scale(canvas, (SCALE_WIDTH, SCALE_HEIGHT))
     window.blit(scaled_canvas, (DESTINATION_X, DESTINATION_Y))
     pg.display.flip()

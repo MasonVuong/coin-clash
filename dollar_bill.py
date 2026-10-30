@@ -74,12 +74,9 @@ class DollarBill(pg.sprite.Sprite):
                     self.state = DollarBillDash(self, self.player.rect.centerx, self.player.rect.centery)
                 if random_attack == 1:
                     self.state = DollarBillShoot(self)
-    def damage(self, coin=None, damage = -1):
+    def damage(self, coin):
         if self.health > 0:
-            if self.damage != -1:
-                self.health -= damage
-            else:
-                self.health -= coin.damage
+            self.health -= coin.damage
             if self.health <= 0:
                 reward_coins = []
                 for i in range(self.coin_drop + self.coin_drop - min(self.damage_done, self.coin_drop) + self.coin_drop * int(self.time_alive <= self.time_goal)):
@@ -94,6 +91,7 @@ class DollarBill(pg.sprite.Sprite):
         return False
 
     def reset(self, x, y):
+        self.state = DollarBillIdle(self)
         self.rest = False
         self.float_x = x
         self.float_y = y

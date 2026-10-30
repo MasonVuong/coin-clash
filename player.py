@@ -25,7 +25,7 @@ class Player(pg.sprite.Sprite):
         self.dime_chance = 0
         self.quarter_chance = 0
         self.silver_dollar_chance = 0
-        self.money = 31
+        self.money = 0
         self.boss = None
 
         self.font = pg.font.Font(None, 25)
