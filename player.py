@@ -12,7 +12,7 @@ class Player(pg.sprite.Sprite):
         self.surface = pg.image.load(Helper.resource_path("assets/pig.png")).convert_alpha()
         self.rect = self.surface.get_rect()
         self.rect.topleft = (self.float_x, self.float_y)
-        self.heart = pg.image.load(Helper.resource_path("assets/heart_5.png")).convert_alpha()
+        self.heart = pg.image.load(Helper.resource_path("assets/heart.png")).convert_alpha()
         self.coins = []
         self.shoot_cooldown = .25
         self.shoot_timer = 1
@@ -21,22 +21,30 @@ class Player(pg.sprite.Sprite):
         self.invincible = 0
         self.damage_buffer_time = 3
 
-        self.nickel_chance = 20
-        self.dime_chance = 10
-        self.quarter_chance = 5
-        self.silver_dollar_chance = 1
-        self.money = 0
+        self.nickel_chance = 0
+        self.dime_chance = 0
+        self.quarter_chance = 0
+        self.silver_dollar_chance = 0
+        self.money = 31
         self.boss = None
 
-        self.font = pg.font.Font(None, 30)
+        self.font = pg.font.Font(None, 25)
+
+        self.rest = False
 
     def draw(self, window):
-        self.draw_ui(window)
-        for coin in self.coins:
-            coin.draw(window)
-        window.blit(self.surface, self.rect)
+        if self.health > 0:
+            self.draw_ui(window)
+            for coin in self.coins:
+                coin.draw(window)
+            window.blit(self.surface, self.rect)
 
     def update(self, seconds):
+        if self.rest:
+            return
+        if self.health <= 0:
+            return "died"
+        
         self.invincible -= seconds
         if self.invincible < 0:
             self.invincible = 0
@@ -86,8 +94,6 @@ class Player(pg.sprite.Sprite):
             
         to_remove = []
         for coin in self.coins:
-            if coin.update():
-                to_remove.append(coin)
             if coin.check_collision(self.boss.rect):
                 to_remove.append(coin)
                 rewards = self.boss.damage(coin)
@@ -95,8 +101,8 @@ class Player(pg.sprite.Sprite):
                     for coin in to_remove:
                         self.coins.remove(coin)  
                     return rewards[1]
-                
-
+            elif coin.update():
+                to_remove.append(coin)
         for coin in to_remove:
             self.coins.remove(coin)  
         return None
@@ -123,6 +129,14 @@ class Player(pg.sprite.Sprite):
         if self.money % 10 == 0:
             text += "0"
         text_surface = self.font.render(text, False, (0, 0, 0))
-        window.blit(text_surface, (2, 20))
+        window.blit(text_surface, (self.health * 15 + 15, 1))
+
+    def reset(self, x, y):
+        self.rest = False
+        self.float_x = x
+        self.float_y = y
+        self.rect.x = self.float_x
+        self.rect.y = self.float_y
+        
 
         

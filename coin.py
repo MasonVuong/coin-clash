@@ -20,7 +20,7 @@ class Coin(pg.sprite.Sprite):
             path = Helper.resource_path("assets/silver_dollar.png")
         self.surface = pg.image.load(path).convert_alpha()
         self.rect = self.surface.get_rect()
-
+        
         self.rect.centerx = x
         self.rect.centery = y
         self.pick_up = pick_up
@@ -35,15 +35,20 @@ class Coin(pg.sprite.Sprite):
             self.speed_y = diff_y * Coin.speed / distance
             self.damage = value
 
+        self.float_x = x
+        self.float_y = y
+
     def draw(self, screen):
         screen.blit(self.surface, self.rect)
 
     def update(self):
         if not self.pick_up:
-            self.rect.x += self.speed_x
-            self.rect.y += self.speed_y
-            diff_x = self.target_x - self.rect.centerx
-            diff_y = self.target_y - self.rect.centery
+            self.float_x += self.speed_x
+            self.float_y += self.speed_y
+            self.rect.centerx = self.float_x
+            self.rect.centery = self.float_y
+            diff_x = self.target_x - self.float_x
+            diff_y = self.target_y - self.float_y
             distance = (diff_x ** 2 + diff_y ** 2) ** .5
             if distance <= Coin.speed:
                 return True
