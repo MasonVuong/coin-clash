@@ -65,6 +65,8 @@ big_font = pg.font.Font(None, 35)
 small_font = pg.font.Font(None, 20)
 state = "title"
 
+pg.mouse.set_visible(False)
+
 while run:
     for e in pg.event.get():
         if e.type == pg.QUIT:
@@ -166,14 +168,20 @@ while run:
         text = "Space to Continue"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 50))
-
+    
     elif state == "title":
         text = "Coin Clash"
         text_surface = big_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 ))
         text = "Space to Continue"
         text_surface = small_font.render(text, False, (0, 0, 0))
-        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 50))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 20))
+        text = "WASD to Move"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 40))
+        text = "IJKL to Shoot"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 60))
     
     scaled_canvas = pg.transform.scale(canvas, (SCALE_WIDTH, SCALE_HEIGHT))
     window.blit(scaled_canvas, (DESTINATION_X, DESTINATION_Y))
