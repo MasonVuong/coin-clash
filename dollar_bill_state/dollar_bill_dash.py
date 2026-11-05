@@ -55,5 +55,4 @@ class DollarBillDash(pg.sprite.Sprite):
             self.wind_up_timer = self.wind_up_length
 
     def draw(self, window):
-        pass
-    
+        window.blit(self.boss.surface, self.boss.rect)

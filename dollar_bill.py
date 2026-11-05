@@ -2,6 +2,7 @@ import pygame as pg; pg.init()
 from dollar_bill_state.dollar_bill_idle import DollarBillIdle
 from dollar_bill_state.dollar_bill_dash import DollarBillDash
 from dollar_bill_state.dollar_bill_shoot import DollarBillShoot
+from dollar_bill_state.dollar_bill_slam import DollarBillSlam
 from coin import Coin
 import random
 from helper import Helper
@@ -33,9 +34,11 @@ class DollarBill(pg.sprite.Sprite):
         self.dime_chance = 0
         self.quarter_chance = 0
         self.silver_dollar_chance = 0
+
+        self.shadow = False
+
     def draw(self, window):
         if self.health > 0:
-            window.blit(self.surface, self.rect)
             self.state.draw(window)
             for coin in self.coins:
                 coin.draw(window)
@@ -45,7 +48,7 @@ class DollarBill(pg.sprite.Sprite):
         if self.health <= 0:
             return "died"
         
-        if self.rect.colliderect(self.player.rect):
+        if not self.shadow and self.rect.colliderect(self.player.rect):
             if self.player.damage(1):
                 self.damage_done += 1
         coins = self.state.update(seconds)
@@ -65,15 +68,18 @@ class DollarBill(pg.sprite.Sprite):
         self.time_alive += seconds
     def attack(self):
         if self.health > 0:
+            
             distance = Helper.targeting(self.player.rect.centerx, self.player.rect.centery, self.rect.centerx, self.rect.centery)
             if distance < 75:
-                self.state = DollarBillShoot(self)
-            else:
                 random_attack = random.randint(0, 1)
-                if random_attack == 0:
-                    self.state = DollarBillDash(self, self.player.rect.centerx, self.player.rect.centery)
-                if random_attack == 1:
-                    self.state = DollarBillShoot(self)
+            else:
+                random_attack = random.randint(0, 2)
+            if random_attack == 0:
+                self.state = DollarBillDash(self, self.player.rect.centerx, self.player.rect.centery)
+            if random_attack == 1:
+                self.state = DollarBillSlam(self)
+            if random_attack == 2:
+                self.state = DollarBillShoot(self)
     def damage(self, coin):
         if self.health > 0:
             self.health -= coin.damage

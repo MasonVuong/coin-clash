@@ -21,8 +21,12 @@ class Helper:
         distance = (diff_x ** 2 + diff_y ** 2) ** .5
         if speed == -1:
              return distance
-        speed_x = diff_x * speed / distance
-        speed_y = diff_y * speed / distance
+        if distance == 0:
+            speed_x = 0
+            speed_y = 0
+        else:
+            speed_x = diff_x * speed / distance
+            speed_y = diff_y * speed / distance
         return [distance, speed_x, speed_y]
 
     @staticmethod

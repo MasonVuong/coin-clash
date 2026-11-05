@@ -44,6 +44,7 @@ class DollarBillShoot:
         return None
     
     def draw(self, window):
+        window.blit(self.boss.surface, self.boss.rect)
         if self.type == "Around":
             for x_off in range(2):
                 for y_off in range(2):

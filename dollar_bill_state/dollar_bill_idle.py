@@ -13,4 +13,4 @@ class DollarBillIdle(pg.sprite.Sprite):
             self.attack_timer = 0
             self.boss.attack()
     def draw(self, window):
-        pass
+        window.blit(self.boss.surface, self.boss.rect)
