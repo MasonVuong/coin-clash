@@ -97,7 +97,7 @@ class Player(pg.sprite.Sprite):
             
         to_remove = []
         for coin in self.coins:
-            if coin.check_collision(self.boss.rect):
+            if not self.boss.shadow and coin.check_collision(self.boss.rect):
                 to_remove.append(coin)
                 rewards = self.boss.damage(coin)
                 if rewards[0]:

@@ -29,6 +29,7 @@ class DollarBill(pg.sprite.Sprite):
         self.rest = False
         self.shoot_attacks = ["Around"]
         self.upgrade_level = 0
+        self.available_attacks = 1
 
         self.nickel_chance = 0
         self.dime_chance = 0
@@ -68,18 +69,20 @@ class DollarBill(pg.sprite.Sprite):
         self.time_alive += seconds
     def attack(self):
         if self.health > 0:
-            
+            """
             distance = Helper.targeting(self.player.rect.centerx, self.player.rect.centery, self.rect.centerx, self.rect.centery)
             if distance < 75:
                 random_attack = random.randint(0, 1)
             else:
                 random_attack = random.randint(0, 2)
+            """
+            random_attack = random.randint(0, self.available_attacks)
             if random_attack == 0:
                 self.state = DollarBillDash(self, self.player.rect.centerx, self.player.rect.centery)
             if random_attack == 1:
-                self.state = DollarBillSlam(self)
-            if random_attack == 2:
                 self.state = DollarBillShoot(self)
+            if random_attack == 2:
+                self.state = DollarBillSlam(self)
     def damage(self, coin):
         if self.health > 0:
             self.health -= coin.damage
@@ -106,28 +109,31 @@ class DollarBill(pg.sprite.Sprite):
         self.upgrade_level += 1
         self.max_health *= 1.25
         self.health = self.max_health
-        self.speed += 1
-        self.range += 25
         if self.upgrade_level % 4 == 1:
             if self.upgrade_level == 1:
                 self.dime_chance = 10
             else:
                 self.dime_chance += 2
+            self.speed += .5
         elif self.upgrade_level % 4 == 2:
             if self.upgrade_level == 2:
                 self.shoot_attacks.append("3 Targeted")
                 self.nickel_chance = 20
             else:
                 self.nickel_chance += 2
-        elif self.upgrade_level == 3:
+            self.range += 20
+        elif self.upgrade_level % 4 == 3:
             if self.upgrade_level == 3:
+                self.available_attacks += 1
                 self.quarter_chance = 5
             else:
                 self.quarter_chance += 2
-        elif self.upgrade_level == 4:
+            self.speed += .5
+        elif self.upgrade_level % 4 == 0:
             if self.upgrade_level == 4:
                 self.silver_dollar_chance = 1
             else:
                 self.silver_dollar_chance += 2
+            self.range += 20
 
     
