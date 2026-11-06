@@ -140,6 +140,7 @@ class Player(pg.sprite.Sprite):
         self.float_y = y
         self.rect.x = self.float_x
         self.rect.y = self.float_y
+        self.coins.clear()
 
     def upgrade_coin_luck(self):
         self.coin_luck_upgrade_level += 1

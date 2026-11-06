@@ -17,6 +17,11 @@ class DollarBill(pg.sprite.Sprite):
         self.float_y = y
         self.surface = pg.image.load(Helper.resource_path("assets/bill.png")).convert_alpha()
         self.rect = self.surface.get_rect()
+        self.ground_slammed_surfaces = []
+        for i in range(5):
+            self.ground_slammed_surfaces.append(pg.image.load(Helper.resource_path("assets/bill_ground_slammed.png")).convert_alpha().subsurface(i * 160, 0, 160, 105))
+        self.ground_slammed_rect = self.ground_slammed_surfaces[0].get_rect()
+        self.ground_slammed = False
         self.rect.topleft = (self.float_x, self.float_y)
         self.health = 100
         self.max_health = 100
@@ -37,6 +42,8 @@ class DollarBill(pg.sprite.Sprite):
         self.silver_dollar_chance = 0
 
         self.shadow = False
+        self.dash_projectiles = False
+        self.slam_projectiles = False
 
     def draw(self, window):
         if self.health > 0:
@@ -111,26 +118,28 @@ class DollarBill(pg.sprite.Sprite):
         self.health = self.max_health
         if self.upgrade_level % 4 == 1:
             if self.upgrade_level == 1:
+                self.shoot_attacks.append("3 Targeted")
                 self.dime_chance = 10
             else:
                 self.dime_chance += 2
             self.speed += .5
         elif self.upgrade_level % 4 == 2:
             if self.upgrade_level == 2:
-                self.shoot_attacks.append("3 Targeted")
+                self.available_attacks += 1
                 self.nickel_chance = 20
             else:
                 self.nickel_chance += 2
             self.range += 20
         elif self.upgrade_level % 4 == 3:
             if self.upgrade_level == 3:
-                self.available_attacks += 1
+                self.dash_projectiles = True
                 self.quarter_chance = 5
             else:
                 self.quarter_chance += 2
             self.speed += .5
         elif self.upgrade_level % 4 == 0:
             if self.upgrade_level == 4:
+                self.slam_projectiles = True
                 self.silver_dollar_chance = 1
             else:
                 self.silver_dollar_chance += 2

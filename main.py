@@ -50,15 +50,15 @@ coin_luck_rect = coin_luck_surface.get_rect()
 coin_luck_rect.centerx = 2 * shop_offset
 coin_luck_rect.centery = 90
 
-health_surface = pg.image.load(Helper.resource_path("assets/health_icon.png")).convert_alpha()
-health_rect = health_surface.get_rect()
-health_rect.centerx = 3 * shop_offset
-health_rect.centery = 90
-
 speed_surface = pg.image.load(Helper.resource_path("assets/speed_icon.png")).convert_alpha()
 speed_rect = speed_surface.get_rect()
-speed_rect.centerx = 4 * shop_offset
+speed_rect.centerx = 3 * shop_offset
 speed_rect.centery = 90
+
+health_surface = pg.image.load(Helper.resource_path("assets/health_icon.png")).convert_alpha()
+health_rect = health_surface.get_rect()
+health_rect.centerx = 4 * shop_offset
+health_rect.centery = 90
 
 run = True
 debug = False
@@ -121,10 +121,10 @@ while run:
                     player.upgrade_coin_luck()
                     player.money -= 10
                 if e.key == pg.K_k and player.money >= 10:
-                    player.health += 1
+                    player.speed += .1
                     player.money -= 10
                 if e.key == pg.K_l and player.money >= 10:
-                    player.speed += .1
+                    player.health += 1
                     player.money -= 10
 
     seconds = clock.tick(60) / 1000.0
