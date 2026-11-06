@@ -38,22 +38,31 @@ floor_coins = []
 background_surface = pg.image.load(Helper.resource_path("assets/boxing_ring.png")).convert_alpha()
 background_rect = background_surface.get_rect()
 
+shop_offset = 320 / 5
+
 damage_icon_surface = pg.image.load(Helper.resource_path("assets/damage_icon.png")).convert_alpha()
 damage_icon_rect = damage_icon_surface.get_rect()
-damage_icon_rect.centerx = 80
+damage_icon_rect.centerx = shop_offset
 damage_icon_rect.centery = 90
 
 coin_luck_surface = pg.image.load(Helper.resource_path("assets/coin_luck_icon.png")).convert_alpha()
 coin_luck_rect = coin_luck_surface.get_rect()
-coin_luck_rect.centerx = 160
+coin_luck_rect.centerx = 2 * shop_offset
 coin_luck_rect.centery = 90
 
 health_surface = pg.image.load(Helper.resource_path("assets/health_icon.png")).convert_alpha()
 health_rect = health_surface.get_rect()
-health_rect.centerx = 240
+health_rect.centerx = 3 * shop_offset
 health_rect.centery = 90
 
+speed_surface = pg.image.load(Helper.resource_path("assets/speed_icon.png")).convert_alpha()
+speed_rect = speed_surface.get_rect()
+speed_rect.centerx = 4 * shop_offset
+speed_rect.centery = 90
+
 run = True
+debug = True
+cheats = False
 player_points = 0
 boss_points = 0
 last_winner = None
@@ -76,6 +85,13 @@ while run:
                     boss.rest = False
                     player.rest = False
                     state = "fight"
+                elif debug and state == "fight":
+                    if cheats:
+                        player.damage_multiplier -= 100
+                        cheats = False
+                    else:
+                        player.damage_multiplier += 100
+                        cheats = True
                 elif state == "message":
                     if player.health > 0:
                         message_timer = 0
@@ -96,14 +112,17 @@ while run:
                     boss.reset(boss_start_x, boss_start_y)
                     state = "fight"
             if state == "shop":
-                if e.key == pg.K_j and player.money >= 10:
+                if e.key == pg.K_i and player.money >= 10:
                     player.damage_multiplier += 0.1
                     player.money -= 10
-                if e.key == pg.K_k and player.money >= 10:
+                if e.key == pg.K_j and player.money >= 10:
                     player.upgrade_coin_luck()
                     player.money -= 10
-                if e.key == pg.K_l and player.money >= 10:
+                if e.key == pg.K_k and player.money >= 10:
                     player.health += 1
+                    player.money -= 10
+                if e.key == pg.K_l and player.money >= 10:
+                    player.speed += .1
                     player.money -= 10
 
     seconds = clock.tick(60) / 1000.0
@@ -141,7 +160,7 @@ while run:
         floor_coins.remove(coin)
 
     if state == "message":
-        pg.draw.ellipse(canvas, blue if last_winner == "player" else red, pg.Rect(80, 45, 160, 90))
+        pg.draw.ellipse(canvas, blue if last_winner == "player" else red, pg.Rect(70, 45, 180, 90))
         text = "Piggy Won!" if last_winner == "player" else "Game Over"
         text_surface = big_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2))
@@ -150,19 +169,24 @@ while run:
         canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
 
     elif state == "shop":
-        pg.draw.ellipse(canvas, (255, 241, 232), pg.Rect(40, 30, 240, 120))
+        pg.draw.ellipse(canvas, (255, 241, 232), pg.Rect(30, 30, 260, 120))
         canvas.blit(damage_icon_surface, damage_icon_rect)
         canvas.blit(coin_luck_surface, coin_luck_rect)
         canvas.blit(health_surface, health_rect)
+        canvas.blit(speed_surface, speed_rect)
+        text = "I: 10¢"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
         text = "J: 10¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
-        canvas.blit(text_surface, (80 - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
+        canvas.blit(text_surface, (2 * shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
         text = "K: 10¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
-        canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
+        canvas.blit(text_surface, (3 * shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
         text = "L: 10¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
-        canvas.blit(text_surface, (240 - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
+        canvas.blit(text_surface, (4 * shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
+    
         text = "Space to Continue"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 50))

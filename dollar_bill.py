@@ -10,7 +10,7 @@ from helper import Helper
 class DollarBill(pg.sprite.Sprite):
     def __init__(self, player, x, y):
         super().__init__()
-        self.speed = 5
+        self.speed = 4
         self.state = DollarBillIdle(self)
         self.player = player
         self.float_x = x

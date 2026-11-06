@@ -6,7 +6,7 @@ from helper import Helper
 class Player(pg.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.speed = 3
+        self.speed = 2
         self.float_x = x
         self.float_y = y
         self.surface = pg.image.load(Helper.resource_path("assets/pig.png")).convert_alpha()
