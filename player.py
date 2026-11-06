@@ -43,8 +43,6 @@ class Player(pg.sprite.Sprite):
             window.blit(self.surface, self.rect)
 
     def update(self, seconds):
-        if self.rest:
-            return
         if self.health <= 0:
             return "died"
         
@@ -75,7 +73,7 @@ class Player(pg.sprite.Sprite):
         self.rect.topleft = (self.float_x, self.float_y)
 
         self.shoot_timer += seconds
-        if self.shoot_timer >= self.shoot_cooldown:
+        if self.shoot_timer >= self.shoot_cooldown and not self.rest:
             direct_x = 0
             direct_y = 0
             if keys[pg.K_i]:

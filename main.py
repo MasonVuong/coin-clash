@@ -144,23 +144,12 @@ while run:
     if boss.update(seconds) == "died":
         player_points += 1
         last_winner = "player"
-        #player.rest = True
+        player.rest = True
         boss.rest = True
         state = "message"
 
     
     canvas.blit(background_surface, background_rect)
-    boss.draw(canvas)
-    player.draw(canvas)
-    to_remove = []
-    for coin in floor_coins:
-        coin.draw(canvas) 
-        if coin.check_collision(player.rect):
-            player.pickup(coin)
-            to_remove.append(coin)
-    for coin in to_remove:
-        floor_coins.remove(coin)
-
     if state == "message":
         pg.draw.ellipse(canvas, blue if last_winner == "player" else red, pg.Rect(70, 45, 180, 90))
         text = "Piggy Won!" if last_winner == "player" else "Game Over"
@@ -206,6 +195,18 @@ while run:
         text = "IJKL to Shoot"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 60))
+
+    if state != "message" or last_winner != "boss":
+        boss.draw(canvas)
+        player.draw(canvas)
+        to_remove = []
+        for coin in floor_coins:
+            coin.draw(canvas) 
+            if coin.check_collision(player.rect):
+                player.pickup(coin)
+                to_remove.append(coin)
+        for coin in to_remove:
+            floor_coins.remove(coin)
     
     scaled_canvas = pg.transform.scale(canvas, (SCALE_WIDTH, SCALE_HEIGHT))
     window.blit(scaled_canvas, (DESTINATION_X, DESTINATION_Y))
