@@ -61,7 +61,7 @@ speed_rect.centerx = 4 * shop_offset
 speed_rect.centery = 90
 
 run = True
-debug = True
+debug = False
 cheats = False
 player_points = 0
 boss_points = 0
@@ -80,6 +80,8 @@ while run:
         if e.type == pg.QUIT:
             run = False
         if e.type == pg.KEYDOWN:
+            if e.key == pg.K_ESCAPE:
+                run = False
             if e.key == pg.K_SPACE:
                 if state == "title":
                     boss.rest = False
@@ -169,7 +171,7 @@ while run:
         canvas.blit(text_surface, (160 - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
 
     elif state == "shop":
-        pg.draw.ellipse(canvas, (255, 241, 232), pg.Rect(30, 30, 260, 120))
+        pg.draw.ellipse(canvas, (255, 241, 232), pg.Rect(20, 30, 280, 120))
         canvas.blit(damage_icon_surface, damage_icon_rect)
         canvas.blit(coin_luck_surface, coin_luck_rect)
         canvas.blit(health_surface, health_rect)
