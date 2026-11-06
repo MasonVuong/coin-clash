@@ -54,7 +54,6 @@ health_rect.centerx = 240
 health_rect.centery = 90
 
 run = True
-debug = True
 player_points = 0
 boss_points = 0
 last_winner = None
@@ -77,9 +76,6 @@ while run:
                     boss.rest = False
                     player.rest = False
                     state = "fight"
-                elif debug and state == "fight":
-                    boss.health -= boss.max_health
-
                 elif state == "message":
                     if player.health > 0:
                         message_timer = 0

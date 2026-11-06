@@ -7,7 +7,7 @@ class DollarBillSlam(pg.sprite.Sprite):
         super().__init__()
         self.boss = boss
         self.air_timer = 0
-        self.slam_cooldown = 3
+        self.slam_cooldown = 2
         self.scale = 1
     def update(self, seconds):
         self.boss.rect.topleft = (self.boss.float_x, self.boss.float_y)
@@ -33,7 +33,7 @@ class DollarBillSlam(pg.sprite.Sprite):
             scaled_height = self.boss.rect.height * self.scale
             pg.draw.ellipse(window, (95, 87, 70), pg.Rect(self.boss.rect.centerx - scaled_width / 2, self.boss.rect.centery - scaled_height / 2, scaled_width, scaled_height))
             if self.air_timer >= self.slam_cooldown:
-                self.scale += .03
+                self.scale += .04
             if self.scale >= 1:
                 self.boss.state = DollarBillIdle(self.boss)
                 self.boss.shadow = False
