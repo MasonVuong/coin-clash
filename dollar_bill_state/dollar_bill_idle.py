@@ -7,7 +7,6 @@ class DollarBillIdle(pg.sprite.Sprite):
         self.attack_cooldown = 2
         self.attack_timer = 0
         self.animation_timer = 0
-        self.animation_direction = 1
 
     def update(self, seconds):
         self.attack_timer += seconds
@@ -15,17 +14,13 @@ class DollarBillIdle(pg.sprite.Sprite):
             self.attack_timer = 0
             self.boss.attack()
         if self.boss.ground_slammed:
-            self.animation_timer += seconds * self.animation_direction
+            self.animation_timer += seconds
     def draw(self, window):
         if not self.boss.ground_slammed:
             window.blit(self.boss.surface, self.boss.rect)
         else:
-            animation_index = int(self.animation_timer * 40)
-            if animation_index >= 5:
-                self.animation_direction = -1
-                window.blit(self.boss.ground_slammed_surfaces[4], self.boss.ground_slammed_rect)
-            elif animation_index < 0:
-                self.boss.ground_slammed = False
+            animation_index = int(self.animation_timer * 20)
+            if animation_index >= len(self.boss.ground_slammed_surfaces):
                 window.blit(self.boss.surface, self.boss.rect)
             else:
                 window.blit(self.boss.ground_slammed_surfaces[animation_index], self.boss.ground_slammed_rect)

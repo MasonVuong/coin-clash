@@ -18,7 +18,7 @@ class DollarBill(pg.sprite.Sprite):
         self.surface = pg.image.load(Helper.resource_path("assets/bill.png")).convert_alpha()
         self.rect = self.surface.get_rect()
         self.ground_slammed_surfaces = []
-        for i in range(5):
+        for i in range(7):
             self.ground_slammed_surfaces.append(pg.image.load(Helper.resource_path("assets/bill_ground_slammed.png")).convert_alpha().subsurface(i * 160, 0, 160, 105))
         self.ground_slammed_rect = self.ground_slammed_surfaces[0].get_rect()
         self.ground_slammed = False

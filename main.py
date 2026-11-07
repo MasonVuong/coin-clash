@@ -129,24 +129,25 @@ while run:
 
     seconds = clock.tick(60) / 1000.0
 
-    rewards = player.update(seconds)
-    if rewards == "died":
-        boss_points += 1
-        last_winner = "boss"
-        boss.rest = True
-        player.rest = True
-        state = "message"
+    if state != "title":
+        rewards = player.update(seconds)
+        if rewards == "died":
+            boss_points += 1
+            last_winner = "boss"
+            boss.rest = True
+            player.rest = True
+            state = "message"
 
-    elif rewards != None:
-        for coin in rewards:
-            floor_coins.append(coin)
+        elif rewards != None:
+            for coin in rewards:
+                floor_coins.append(coin)
         
-    if boss.update(seconds) == "died":
-        player_points += 1
-        last_winner = "player"
-        player.rest = True
-        boss.rest = True
-        state = "message"
+        if boss.update(seconds) == "died":
+            player_points += 1
+            last_winner = "player"
+            player.rest = True
+            boss.rest = True
+            state = "message"
 
     
     canvas.blit(background_surface, background_rect)
