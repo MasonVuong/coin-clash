@@ -35,6 +35,11 @@ class Player(pg.sprite.Sprite):
         self.coin_luck_upgrade_level = 0
         self.damage_multiplier = 1
 
+        self.coin_luck_cost = 10
+        self.damage_multiplier_cost = 10
+        self.health_cost = 5
+        self.speed_cost = 15
+
     def draw(self, window):
         if self.health > 0:
             self.draw_ui(window)
@@ -109,7 +114,7 @@ class Player(pg.sprite.Sprite):
         return None
     def pickup(self, object):
         if isinstance(object, Coin):
-            self.money += object.value
+            self.money += object.value / 100
     def check_collision(self, rect):
         if self.rect.colliderect(rect):
             return True
@@ -126,9 +131,7 @@ class Player(pg.sprite.Sprite):
         if int(self.invincible * 5) % 2 == 0:
             for i in range(self.health):
                 window.blit(self.heart, pg.Rect(1 + i * 15, 1, 13, 13))
-        text = "$" + str(self.money / 100)
-        if self.money % 10 == 0:
-            text += "0"
+        text = "$" + f"{self.money:.2f}"
         text_surface = self.font.render(text, False, (0, 0, 0))
         window.blit(text_surface, (self.health * 15 + 15, 1))
 
@@ -163,6 +166,14 @@ class Player(pg.sprite.Sprite):
             else:
                 self.silver_dollar_chance += 2
         
-        
+    def increase_upgrade_cost(self, type):
+        if type == "coin luck":
+            self.coin_luck_cost *= 1.1
+        elif type == "damage multiplier":
+            self.damage_multiplier_cost *= 1.1
+        elif type == "health":
+            self.health_cost *= 1.1
+        elif type == "speed":
+            self.speed_cost *= 1.1
 
         
