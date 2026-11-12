@@ -61,7 +61,7 @@ health_rect.centerx = 4 * shop_offset
 health_rect.centery = 90
 
 run = True
-debug = True
+debug = False
 cheats = False
 player_points = 0
 boss_points = 0
@@ -114,21 +114,21 @@ while run:
                     boss.reset(boss_start_x, boss_start_y)
                     state = "fight"
             if state == "shop":
-                if e.key == pg.K_i and player.money >= player.damage_multiplier_cost / 100:
+                if e.key == pg.K_i and player.money >= round(player.damage_multiplier_cost / 100, 2):
                     player.damage_multiplier += 0.1
-                    player.money -= player.damage_multiplier_cost / 100
+                    player.money -= round(player.damage_multiplier_cost / 100, 2)
                     player.increase_upgrade_cost("damage multiplier")
-                if e.key == pg.K_j and player.money >= player.coin_luck_cost / 100:
+                if e.key == pg.K_j and player.money >= round(player.coin_luck_cost / 100, 2):
                     player.upgrade_coin_luck()
-                    player.money -= player.coin_luck_cost / 100
+                    player.money -= round(player.coin_luck_cost / 100, 2)
                     player.increase_upgrade_cost("coin luck")
-                if e.key == pg.K_k and player.money >= player.speed_cost / 100:
+                if e.key == pg.K_k and player.money >= round(player.speed_cost / 100, 2):
                     player.speed += .1
-                    player.money -= player.speed_cost / 100
+                    player.money -= round(player.speed_cost / 100, 2)
                     player.increase_upgrade_cost("speed")
-                if e.key == pg.K_l and player.money >= player.health_cost / 100:
+                if e.key == pg.K_l and player.money >= round(player.health_cost / 100, 2):
                     player.health += 1
-                    player.money -= player.health_cost / 100
+                    player.money -= round(player.health_cost / 100, 2)
                     player.increase_upgrade_cost("health")
 
     seconds = clock.tick(60) / 1000.0
