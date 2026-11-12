@@ -16,14 +16,14 @@ class DollarBillDash(pg.sprite.Sprite):
     def update(self, seconds):
         self.wind_up_timer += seconds
         if self.wind_up_timer >= self.wind_up_length:
-            self.boss.float_x += self.speed_x
-            self.boss.float_y += self.speed_y
+            self.boss.float_x += self.speed_x * seconds * 60
+            self.boss.float_y += self.speed_y * seconds * 60
         else:
-            self.boss.float_x -= self.speed_x / 10
-            self.boss.float_y -= self.speed_y / 10
+            self.boss.float_x -= self.speed_x / 10 * seconds * 60
+            self.boss.float_y -= self.speed_y / 10 * seconds * 60
         self.boss.rect.topleft = (self.boss.float_x, self.boss.float_y)
         distance = Helper.targeting(self.target_x, self.target_y, self.boss.rect.centerx, self.boss.rect.centery)
-        if distance <= self.boss.speed:
+        if distance <= self.boss.speed  * seconds * 60:
             self.boss.rect.centerx = self.target_x
             self.boss.rect.centery = self.target_y
             self.boss.state = DollarBillIdle(self.boss)

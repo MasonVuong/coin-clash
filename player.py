@@ -60,13 +60,13 @@ class Player(pg.sprite.Sprite):
         if (keys[pg.K_w] ^ keys[pg.K_s]) and (keys[pg.K_a] ^ keys[pg.K_d]):
             diagonal = 2 ** .5
         if keys[pg.K_w]:
-            self.float_y -= self.speed / diagonal
+            self.float_y -= self.speed / diagonal * seconds * 60
         if keys[pg.K_a]:
-            self.float_x -= self.speed / diagonal
+            self.float_x -= self.speed / diagonal * seconds * 60
         if keys[pg.K_s]:
-            self.float_y += self.speed / diagonal
+            self.float_y += self.speed / diagonal * seconds * 60
         if keys[pg.K_d]:
-            self.float_x += self.speed / diagonal
+            self.float_x += self.speed / diagonal * seconds * 60
         if self.float_x < 0:
             self.float_x = 0
         if self.float_x > 320 - self.rect.width:
@@ -92,7 +92,7 @@ class Player(pg.sprite.Sprite):
             if (direct_x != 0 or direct_y != 0):
                 self.shoot_timer = 0
                 if (direct_x != 0 and direct_y != 0):
-                    diagonal = 2 ** .5
+                    diagonal = 1 / 2 ** .5
                 else:
                     diagonal = 1
                 coin_type = Coin.random_coin_value(self.nickel_chance, self.dime_chance, self.quarter_chance, self.silver_dollar_chance)
@@ -107,7 +107,7 @@ class Player(pg.sprite.Sprite):
                     for coin in to_remove:
                         self.coins.remove(coin)  
                     return rewards[1]
-            elif coin.update():
+            elif coin.update(seconds):
                 to_remove.append(coin)
         for coin in to_remove:
             self.coins.remove(coin)  
@@ -155,12 +155,12 @@ class Player(pg.sprite.Sprite):
                 self.nickel_chance = 20
             else:
                 self.nickel_chance += 2
-        elif self.coin_luck_upgrade_level == 3:
+        elif self.coin_luck_upgrade_level % 4 == 3:
             if self.coin_luck_upgrade_level == 3:
                 self.quarter_chance = 5
             else:
                 self.quarter_chance += 2
-        elif self.coin_luck_upgrade_level == 4:
+        elif self.coin_luck_upgrade_level % 4 == 0:
             if self.coin_luck_upgrade_level == 4:
                 self.silver_dollar_chance = 1
             else:

@@ -69,7 +69,7 @@ class DollarBill(pg.sprite.Sprite):
                 if self.player.damage(1):
                     self.damage_done += 1
                 to_remove.append(coin)
-            elif coin.update():
+            elif coin.update(seconds):
                 to_remove.append(coin)
         for coin in to_remove:
             self.coins.remove(coin)  

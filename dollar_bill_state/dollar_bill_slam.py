@@ -15,8 +15,8 @@ class DollarBillSlam(pg.sprite.Sprite):
         if self.boss.shadow:
             if self.air_timer < self.slam_cooldown:
                 distance, self.speed_x, self.speed_y = Helper.targeting(self.boss.player.rect.centerx, self.boss.player.rect.centery, self.boss.rect.centerx, self.boss.rect.centery, self.boss.speed / 4)
-                self.boss.float_x += self.speed_x
-                self.boss.float_y += self.speed_y
+                self.boss.float_x += self.speed_x * seconds * 60
+                self.boss.float_y += self.speed_y * seconds * 60
                 self.air_timer += seconds
             else:
                 self.scale += 1 * seconds * 3

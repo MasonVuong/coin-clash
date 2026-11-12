@@ -41,16 +41,16 @@ class Coin(pg.sprite.Sprite):
     def draw(self, screen):
         screen.blit(self.surface, self.rect)
 
-    def update(self):
+    def update(self, seconds):
         if not self.pick_up:
-            self.float_x += self.speed_x
-            self.float_y += self.speed_y
+            self.float_x += self.speed_x * seconds * 60
+            self.float_y += self.speed_y * seconds * 60
             self.rect.centerx = self.float_x
             self.rect.centery = self.float_y
             diff_x = self.target_x - self.float_x
             diff_y = self.target_y - self.float_y
             distance = (diff_x ** 2 + diff_y ** 2) ** .5
-            if distance <= Coin.speed:
+            if distance <= Coin.speed  * seconds * 60:
                 return True
         return False
         
