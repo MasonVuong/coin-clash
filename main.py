@@ -5,6 +5,27 @@ from player import Player
 from dollar_bill import DollarBill
 from helper import Helper
 
+icon = pg.image.load(Helper.resource_path("assets/small_icon.png"))
+def set_up_display(input_scale=-1, fullscreen=True):
+    global scale, scale_width, scale_height, destination_x, destination_y, resolution_height, resolution_height, window
+    if input_scale == -1:
+        scale = max(1, min(MONITOR_WIDTH // VIRTUAL_WIDTH, MONITOR_HEIGHT // VIRTUAL_HEIGHT))
+    else:
+        scale = input_scale
+    scale_width = int(VIRTUAL_WIDTH * scale)
+    scale_height = int(VIRTUAL_HEIGHT * scale)
+
+    pg.display.set_icon(icon)
+    if fullscreen:
+        window = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT), pg.FULLSCREEN)
+        destination_x = (MONITOR_WIDTH - scale_width) // 2
+        destination_y = (MONITOR_HEIGHT - scale_height) // 2
+    else:
+        window = pg.display.set_mode((scale_width, scale_height))
+        destination_x = 0
+        destination_y = 0
+    pg.display.set_caption("Coin Clash")
+
 VIRTUAL_WIDTH = 320
 VIRTUAL_HEIGHT = 180
 
@@ -12,14 +33,7 @@ info = pg.display.Info()
 MONITOR_WIDTH = info.current_w
 MONITOR_HEIGHT = info.current_h
 
-SCALE = min(MONITOR_WIDTH / VIRTUAL_WIDTH, MONITOR_HEIGHT / VIRTUAL_HEIGHT)
-SCALE_WIDTH = int(VIRTUAL_WIDTH * SCALE)
-SCALE_HEIGHT = int(VIRTUAL_HEIGHT * SCALE)
-
-DESTINATION_X = (MONITOR_WIDTH - SCALE_WIDTH) // 2
-DESTINATION_Y = (MONITOR_HEIGHT - SCALE_HEIGHT) // 2
-
-window = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT), pg.RESIZABLE)
+set_up_display(input_scale=3, fullscreen=False)
 canvas = pg.Surface((VIRTUAL_WIDTH, VIRTUAL_HEIGHT))
 clock = pg.time.Clock()
 
@@ -79,7 +93,7 @@ while run:
     for e in pg.event.get():
         if e.type == pg.QUIT:
             run = False
-        if e.type == pg.KEYDOWN:
+        elif e.type == pg.KEYDOWN:
             if e.key == pg.K_ESCAPE:
                 run = False
             if e.key == pg.K_SPACE:
@@ -213,8 +227,8 @@ while run:
         for coin in to_remove:
             floor_coins.remove(coin)
     
-    scaled_canvas = pg.transform.scale(canvas, (SCALE_WIDTH, SCALE_HEIGHT))
-    window.blit(scaled_canvas, (DESTINATION_X, DESTINATION_Y))
+    scaled_canvas = pg.transform.scale(canvas, (scale_width, scale_height))
+    window.blit(scaled_canvas, (destination_x, destination_y))
     pg.display.flip()
 
 pg.quit()

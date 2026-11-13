@@ -39,17 +39,9 @@
    '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\main.py',
    'PYSOURCE'),
   ('python314.dll', 'C:\\Python314\\python314.dll', 'BINARY'),
-  ('SDL2.dll',
+  ('libwebpdemux-2.dll',
    'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\SDL2.dll',
-   'BINARY'),
-  ('SDL2_mixer.dll',
-   'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\SDL2_mixer.dll',
-   'BINARY'),
-  ('libwavpack-1.dll',
-   'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libwavpack-1.dll',
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libwebpdemux-2.dll',
    'BINARY'),
   ('SDL2_image.dll',
    'C:\\Users\\Mason '
@@ -63,45 +55,53 @@
    'C:\\Users\\Mason '
    'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libopus-0.dll',
    'BINARY'),
-  ('libogg-0.dll',
+  ('libtiff-5.dll',
    'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libogg-0.dll',
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libtiff-5.dll',
    'BINARY'),
   ('libwebp-7.dll',
    'C:\\Users\\Mason '
    'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libwebp-7.dll',
    'BINARY'),
-  ('libjpeg-62.dll',
-   'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libjpeg-62.dll',
-   'BINARY'),
-  ('libtiff-5.dll',
-   'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libtiff-5.dll',
-   'BINARY'),
-  ('SDL2_ttf.dll',
-   'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\SDL2_ttf.dll',
-   'BINARY'),
-  ('libpng16-16.dll',
-   'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libpng16-16.dll',
-   'BINARY'),
   ('freetype.dll',
    'C:\\Users\\Mason '
    'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\freetype.dll',
+   'BINARY'),
+  ('libwavpack-1.dll',
+   'C:\\Users\\Mason '
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libwavpack-1.dll',
+   'BINARY'),
+  ('SDL2_mixer.dll',
+   'C:\\Users\\Mason '
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\SDL2_mixer.dll',
    'BINARY'),
   ('libopusfile-0.dll',
    'C:\\Users\\Mason '
    'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libopusfile-0.dll',
    'BINARY'),
+  ('libpng16-16.dll',
+   'C:\\Users\\Mason '
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libpng16-16.dll',
+   'BINARY'),
+  ('libogg-0.dll',
+   'C:\\Users\\Mason '
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libogg-0.dll',
+   'BINARY'),
+  ('SDL2_ttf.dll',
+   'C:\\Users\\Mason '
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\SDL2_ttf.dll',
+   'BINARY'),
+  ('SDL2.dll',
+   'C:\\Users\\Mason '
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\SDL2.dll',
+   'BINARY'),
   ('portmidi.dll',
    'C:\\Users\\Mason '
    'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\portmidi.dll',
    'BINARY'),
-  ('libwebpdemux-2.dll',
+  ('libjpeg-62.dll',
    'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libwebpdemux-2.dll',
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libjpeg-62.dll',
    'BINARY'),
   ('_decimal.pyd', 'C:\\Python314\\DLLs\\_decimal.pyd', 'EXTENSION'),
   ('_hashlib.pyd', 'C:\\Python314\\DLLs\\_hashlib.pyd', 'EXTENSION'),
@@ -243,6 +243,10 @@
   ('_ctypes.pyd', 'C:\\Python314\\DLLs\\_ctypes.pyd', 'EXTENSION'),
   ('_wmi.pyd', 'C:\\Python314\\DLLs\\_wmi.pyd', 'EXTENSION'),
   ('VCRUNTIME140.dll', 'C:\\Python314\\VCRUNTIME140.dll', 'BINARY'),
+  ('pygame\\libwebp-7.dll',
+   'C:\\Users\\Mason '
+   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libwebp-7.dll',
+   'BINARY'),
   ('pygame\\SDL2.dll',
    'C:\\Users\\Mason '
    'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\SDL2.dll',
@@ -254,10 +258,6 @@
   ('pygame\\libopus-0.dll',
    'C:\\Users\\Mason '
    'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libopus-0.dll',
-   'BINARY'),
-  ('pygame\\libwebp-7.dll',
-   'C:\\Users\\Mason '
-   'Vuong\\AppData\\Roaming\\Python\\Python314\\site-packages\\pygame\\libwebp-7.dll',
    'BINARY'),
   ('libcrypto-3.dll', 'C:\\Python314\\DLLs\\libcrypto-3.dll', 'BINARY'),
   ('libssl-3.dll', 'C:\\Python314\\DLLs\\libssl-3.dll', 'BINARY'),
@@ -279,6 +279,9 @@
    'BINARY'),
   ('libffi-8.dll', 'C:\\Python314\\DLLs\\libffi-8.dll', 'BINARY'),
   ('VCRUNTIME140_1.dll', 'C:\\Python314\\VCRUNTIME140_1.dll', 'BINARY'),
+  ('assets\\big_icon.png',
+   '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\big_icon.png',
+   'DATA'),
   ('assets\\bill.png',
    '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\bill.png',
    'DATA'),
@@ -306,6 +309,9 @@
   ('assets\\heart.png',
    '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\heart.png',
    'DATA'),
+  ('assets\\icon.ico',
+   '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\icon.ico',
+   'DATA'),
   ('assets\\nickel.png',
    '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\nickel.png',
    'DATA'),
@@ -323,6 +329,9 @@
    'DATA'),
   ('assets\\silver_dollar.png',
    '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\silver_dollar.png',
+   'DATA'),
+  ('assets\\small_icon.png',
+   '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\small_icon.png',
    'DATA'),
   ('assets\\speed_icon.png',
    '\\\\wsl.localhost\\Ubuntu\\home\\mason_vuong\\coin-clash\\assets\\speed_icon.png',
