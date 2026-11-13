@@ -6,34 +6,35 @@ from dollar_bill import DollarBill
 from helper import Helper
 
 icon = pg.image.load(Helper.resource_path("assets/small_icon.png"))
-def set_up_display(input_scale=-1, fullscreen=True):
-    global scale, scale_width, scale_height, destination_x, destination_y, resolution_height, resolution_height, window
+
+def set_up_display(input_scale=-1, input_fullscreen=True, input_display = 0):
+    global display, scale, scale_width, scale_height, destination_x, destination_y, window, fullscreen, monitor_width, monitor_height, max_scale, max_display
+    display = input_display
+    monitor_width, monitor_height = pg.display.get_desktop_sizes()[display]
+    max_display = len(pg.display.get_desktop_sizes()) - 1
+    max_scale = max(1, min(monitor_width // VIRTUAL_WIDTH, monitor_height // VIRTUAL_HEIGHT))
     if input_scale == -1:
-        scale = max(1, min(MONITOR_WIDTH // VIRTUAL_WIDTH, MONITOR_HEIGHT // VIRTUAL_HEIGHT))
+        scale = max_scale
     else:
-        scale = input_scale
+        scale = max(1, min(input_scale, max_scale))
+    fullscreen = input_fullscreen
     scale_width = int(VIRTUAL_WIDTH * scale)
     scale_height = int(VIRTUAL_HEIGHT * scale)
 
     pg.display.set_icon(icon)
     if fullscreen:
-        window = pg.display.set_mode((MONITOR_WIDTH, MONITOR_HEIGHT), pg.FULLSCREEN)
-        destination_x = (MONITOR_WIDTH - scale_width) // 2
-        destination_y = (MONITOR_HEIGHT - scale_height) // 2
+        window = pg.display.set_mode((monitor_width, monitor_height), pg.FULLSCREEN, display=display)
+        destination_x = (monitor_width - scale_width) // 2
+        destination_y = (monitor_height - scale_height) // 2
     else:
-        window = pg.display.set_mode((scale_width, scale_height))
+        window = pg.display.set_mode((scale_width, scale_height), display=display)
         destination_x = 0
         destination_y = 0
     pg.display.set_caption("Coin Clash")
 
 VIRTUAL_WIDTH = 320
 VIRTUAL_HEIGHT = 180
-
-info = pg.display.Info()
-MONITOR_WIDTH = info.current_w
-MONITOR_HEIGHT = info.current_h
-
-set_up_display(input_scale=3, fullscreen=False)
+set_up_display()
 canvas = pg.Surface((VIRTUAL_WIDTH, VIRTUAL_HEIGHT))
 clock = pg.time.Clock()
 
@@ -86,6 +87,9 @@ red = (255, 0, 7)
 big_font = pg.font.Font(None, 35)
 small_font = pg.font.Font(None, 20)
 state = "title"
+previous_state = None
+option_index = 0
+option_index_max = 4
 
 pg.mouse.set_visible(False)
 
@@ -95,7 +99,12 @@ while run:
             run = False
         elif e.type == pg.KEYDOWN:
             if e.key == pg.K_ESCAPE:
-                run = False
+                if state != "options":
+                    previous_state = state
+                    state = "options"
+                else:
+                    state = previous_state
+                    option_index = 0
             if e.key == pg.K_SPACE:
                 if state == "title":
                     boss.rest = False
@@ -126,7 +135,7 @@ while run:
                 elif state == "shop":
                     player.reset(player_start_x, player_start_y)
                     boss.reset(boss_start_x, boss_start_y)
-                    state = "fight"
+                    state = "fight"                   
             if state == "shop":
                 if e.key == pg.K_i and player.money >= round(player.damage_multiplier_cost / 100, 2):
                     player.damage_multiplier += 0.1
@@ -144,10 +153,55 @@ while run:
                     player.health += 1
                     player.money -= round(player.health_cost / 100, 2)
                     player.increase_upgrade_cost("health")
+            elif state == "options":
+                if e.key == pg.K_s:
+                    option_index += 1
+                    if option_index > option_index_max:
+                        option_index = 0
+                elif e.key == pg.K_w:
+                    option_index -= 1
+                    if option_index < 0:
+                        option_index = option_index_max
+                if option_index == 0:
+                    if e.key == pg.K_SPACE:
+                        state = previous_state
+                        option_index = 0
+                elif option_index == 1:
+                    if e.key == pg.K_d:
+                        scale += 1
+                        if scale > max_scale:
+                            scale = max_scale
+                        else:
+                            set_up_display(scale, fullscreen, display)
+                    elif e.key == pg.K_a:
+                        scale -= 1
+                        if scale < 1:
+                            scale = 1
+                        else:
+                            set_up_display(scale, fullscreen, display)
+                elif option_index == 2:
+                    if e.key == pg.K_a or e.key == pg.K_d or e.key == pg.K_SPACE:
+                        set_up_display(scale, not fullscreen, display)
+                elif option_index == 3:
+                    if e.key == pg.K_d:
+                        display += 1
+                        if display > max_display:
+                            display = max_display
+                        else:
+                            set_up_display(scale, fullscreen, display)
+                    elif e.key == pg.K_a:
+                        display -= 1
+                        if display < 0:
+                            display = 0
+                        else:
+                            set_up_display(scale, fullscreen, display)
+                elif option_index == 4:
+                    if e.key == pg.K_SPACE:
+                        run = False
 
     seconds = clock.tick(60) / 1000.0
 
-    if state != "title":
+    if state != "title" and state != "options":
         rewards = player.update(seconds)
         if rewards == "died":
             boss_points += 1
@@ -226,8 +280,61 @@ while run:
                 to_remove.append(coin)
         for coin in to_remove:
             floor_coins.remove(coin)
+
+    if state == "options":
+        pg.draw.rect(canvas, (255, 241, 232), pg.Rect(50, 20, 220, 140))
+        text = "Options"
+        text_surface = big_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 20))
+        text = "Resume Game"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 60))
+        if option_index == 0:
+            x1 = 160 - text_surface.width / 2
+            x2 = 160 + text_surface.width / 2
+            y1 = 60
+            y2 = y1 + text_surface.height
+        text = "Resolution: " + str(scale_width) + " x " + str(scale_height)
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 80))
+        if option_index == 1:
+            x1 = 160 - text_surface.width / 2
+            x2 = 160 + text_surface.width / 2
+            y1 = 80
+            y2 = y1 + text_surface.height
+        text = "Fullscreen" if fullscreen else "Windowed"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 100))
+        if option_index == 2:
+            x1 = 160 - text_surface.width / 2
+            x2 = 160 + text_surface.width / 2
+            y1 = 100
+            y2 = y1 + text_surface.height
+        text = "Display (of " + str(max_display + 1) + "): " + str(display + 1)
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 120))
+        if option_index == 3:
+            x1 = 160 - text_surface.width / 2
+            x2 = 160 + text_surface.width / 2
+            y1 = 120
+            y2 = y1 + text_surface.height
+        text = "Exit Game"
+        text_surface = small_font.render(text, False, (0, 0, 0))
+        canvas.blit(text_surface, (160 - text_surface.width / 2, 140))
+        if option_index == 4:
+            x1 = 160 - text_surface.width / 2
+            x2 = 160 + text_surface.width / 2
+            y1 = 140
+            y2 = y1 + text_surface.height
+
+        x1 -= 5
+        x2 += 5
+        average_y = (y1 + y2) / 2
+        pg.draw.polygon(canvas, (0, 0, 0), [(x1, y1), (x1, y2), (x1 - 10, average_y)])
+        pg.draw.polygon(canvas, (0, 0, 0), [(x2, y1), (x2, y2), (x2 + 10, average_y)])
     
     scaled_canvas = pg.transform.scale(canvas, (scale_width, scale_height))
+    window.fill((0, 0, 0))
     window.blit(scaled_canvas, (destination_x, destination_y))
     pg.display.flip()
 
