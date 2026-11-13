@@ -22,5 +22,6 @@ class DollarBillIdle(pg.sprite.Sprite):
             animation_index = int(self.animation_timer * 20)
             if animation_index >= len(self.boss.ground_slammed_surfaces):
                 window.blit(self.boss.surface, self.boss.rect)
+                self.boss.ground_slammed = False
             else:
                 window.blit(self.boss.ground_slammed_surfaces[animation_index], self.boss.ground_slammed_rect)
