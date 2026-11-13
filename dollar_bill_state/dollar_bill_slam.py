@@ -11,12 +11,13 @@ class DollarBillSlam(pg.sprite.Sprite):
         self.hold_time = .5
         self.scale = 1
     def update(self, seconds):
+        self.boss.rect.size = self.boss.surface.get_size()
         self.boss.rect.topleft = (self.boss.float_x, self.boss.float_y)
         if self.boss.shadow:
             if self.air_timer < self.slam_cooldown:
                 distance, self.speed_x, self.speed_y = Helper.targeting(self.boss.player.rect.centerx, self.boss.player.rect.centery, self.boss.rect.centerx, self.boss.rect.centery, self.boss.speed / 4)
-                self.boss.float_x += self.speed_x * seconds * 60
-                self.boss.float_y += self.speed_y * seconds * 60
+                self.boss.float_x += self.speed_x
+                self.boss.float_y += self.speed_y
                 self.air_timer += seconds
             else:
                 self.scale += 1 * seconds * 3
@@ -31,9 +32,13 @@ class DollarBillSlam(pg.sprite.Sprite):
             if self.scale <= 0:
                 self.boss.shadow = True
                 self.scale = .25
+            else:
+                center = self.boss.rect.center
+                self.boss.rect.size = (int(self.boss.surface.get_width() * self.scale), int(self.boss.surface.get_height() * self.scale))
+                self.boss.rect.center = center
     def draw(self, window):
         if not self.boss.shadow:
-            scaled_surface = pg.transform.scale(self.boss.surface, (self.boss.rect.width * self.scale, self.boss.rect.height * self.scale))
+            scaled_surface = pg.transform.scale(self.boss.surface, (self.boss.surface.get_width() * self.scale, self.boss.surface.get_height() * self.scale))
             scaled_rect = scaled_surface.get_rect()
             scaled_rect.centerx = self.boss.rect.centerx
             scaled_rect.centery = self.boss.rect.centery
@@ -42,4 +47,3 @@ class DollarBillSlam(pg.sprite.Sprite):
             scaled_width = self.boss.rect.width * self.scale
             scaled_height = self.boss.rect.height * self.scale
             pg.draw.ellipse(window, (95, 87, 70), pg.Rect(self.boss.rect.centerx - scaled_width / 2, self.boss.rect.centery - scaled_height / 2, scaled_width, scaled_height))
-            

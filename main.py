@@ -76,7 +76,7 @@ health_rect.centerx = 4 * shop_offset
 health_rect.centery = 90
 
 run = True
-debug = False
+debug = True
 cheats = False
 player_points = 0
 boss_points = 0
@@ -137,21 +137,21 @@ while run:
                     boss.reset(boss_start_x, boss_start_y)
                     state = "fight"                   
             if state == "shop":
-                if e.key == pg.K_i and player.money >= round(player.damage_multiplier_cost / 100, 2):
+                if e.key == pg.K_i and player.money >= int(player.damage_multiplier_cost):
                     player.damage_multiplier += 0.1
-                    player.money -= round(player.damage_multiplier_cost / 100, 2)
+                    player.money -= int(player.damage_multiplier_cost)
                     player.increase_upgrade_cost("damage multiplier")
-                if e.key == pg.K_j and player.money >= round(player.coin_luck_cost / 100, 2):
+                if e.key == pg.K_j and player.money >= int(player.coin_luck_cost):
                     player.upgrade_coin_luck()
-                    player.money -= round(player.coin_luck_cost / 100, 2)
+                    player.money -= int(player.coin_luck_cost)
                     player.increase_upgrade_cost("coin luck")
-                if e.key == pg.K_k and player.money >= round(player.speed_cost / 100, 2):
+                if e.key == pg.K_k and player.money >= int(player.speed_cost):
                     player.speed += .1
-                    player.money -= round(player.speed_cost / 100, 2)
+                    player.money -= int(player.speed_cost)
                     player.increase_upgrade_cost("speed")
-                if e.key == pg.K_l and player.money >= round(player.health_cost / 100, 2):
+                if e.key == pg.K_l and player.money >= int(player.health_cost):
                     player.health += 1
-                    player.money -= round(player.health_cost / 100, 2)
+                    player.money -= int(player.health_cost)
                     player.increase_upgrade_cost("health")
             elif state == "options":
                 if e.key == pg.K_s:
@@ -238,16 +238,16 @@ while run:
         canvas.blit(coin_luck_surface, coin_luck_rect)
         canvas.blit(health_surface, health_rect)
         canvas.blit(speed_surface, speed_rect)
-        text = "I: " + f"{player.damage_multiplier_cost:.0f}" + "¢"
+        text = "I: " + f"{int(player.damage_multiplier_cost)}" + "¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
-        text = "J: " + f"{player.coin_luck_cost:.0f}" + "¢"
+        text = "J: " + f"{int(player.coin_luck_cost)}" + "¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (2 * shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
-        text = "K: " + f"{player.speed_cost:.0f}" + "¢"
+        text = "K: " + f"{int(player.speed_cost)}" + "¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (3 * shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
-        text = "L: " + f"{player.health_cost:.0f}" + "¢"
+        text = "L: " + f"{int(player.health_cost)}" + "¢"
         text_surface = small_font.render(text, False, (0, 0, 0))
         canvas.blit(text_surface, (4 * shop_offset - text_surface.width / 2, 90 - text_surface.height / 2 + 30))
     

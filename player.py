@@ -114,7 +114,7 @@ class Player(pg.sprite.Sprite):
         return None
     def pickup(self, object):
         if isinstance(object, Coin):
-            self.money += object.value / 100
+            self.money += object.value
     def check_collision(self, rect):
         if self.rect.colliderect(rect):
             return True
@@ -131,7 +131,7 @@ class Player(pg.sprite.Sprite):
         if int(self.invincible * 5) % 2 == 0:
             for i in range(self.health):
                 window.blit(self.heart, pg.Rect(1 + i * 15, 1, 13, 13))
-        text = "$" + f"{self.money:.2f}"
+        text = "$" + f"{self.money // 100}.{self.money % 100:02d}"
         text_surface = self.font.render(text, False, (0, 0, 0))
         window.blit(text_surface, (self.health * 15 + 15, 1))
 
