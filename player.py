@@ -28,7 +28,7 @@ class Player(pg.sprite.Sprite):
         self.money = 0
         self.boss = None
 
-        self.font = pg.font.Font(None, 25)
+        self.font = pg.font.Font(None, 24)
 
         self.rest = False
 
@@ -128,12 +128,13 @@ class Player(pg.sprite.Sprite):
     def set_boss(self, boss):
         self.boss = boss
     def draw_ui(self, window):
+        text = "$" + f"{self.money // 100}.{self.money % 100:02d}"
+        text_surface = self.font.render(text, False, (0, 0, 0))
+        pg.draw.rect(window, (255, 241, 232), pg.Rect(0, 0, self.health * 15 + 5 + text_surface.width, 15))
         if int(self.invincible * 5) % 2 == 0:
             for i in range(self.health):
                 window.blit(self.heart, pg.Rect(1 + i * 15, 1, 13, 13))
-        text = "$" + f"{self.money // 100}.{self.money % 100:02d}"
-        text_surface = self.font.render(text, False, (0, 0, 0))
-        window.blit(text_surface, (self.health * 15 + 15, 1))
+        window.blit(text_surface, (self.health * 15 + 5, 0))
 
     def reset(self, x, y):
         self.rest = False

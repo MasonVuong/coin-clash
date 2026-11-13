@@ -50,7 +50,7 @@ boss.rest = True
 player.set_boss(boss)
 floor_coins = []
 
-background_surface = pg.image.load(Helper.resource_path("assets/boxing_ring.png")).convert_alpha()
+background_surface = pg.image.load(Helper.resource_path("assets/updated_boxing_ring.png")).convert_alpha()
 background_rect = background_surface.get_rect()
 
 shop_offset = 320 / 5
@@ -76,7 +76,7 @@ health_rect.centerx = 4 * shop_offset
 health_rect.centery = 90
 
 run = True
-debug = True
+debug = False
 cheats = False
 player_points = 0
 boss_points = 0
